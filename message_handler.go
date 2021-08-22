@@ -5,6 +5,8 @@ import (
 	"regexp"
 )
 
+// structs implementing this interface can be used as message handlers
+// matches is used to know if the handler can handle an update, and then handle can be called for that update's message
 type Handler interface {
 	matches(msg *Message) bool
 	handle(bot *Bot, msg *Message)
@@ -32,10 +34,6 @@ func (cmdHandler *CommandHandler) matches(msg *Message) bool {
 
 func (cmdHandler *CommandHandler) handle(bot *Bot, msg *Message) {
 	cmdHandler.handler(bot, msg)
-}
-
-func (txtHandler *TextMessageHandler) New() {
-
 }
 
 func (txtHandler *TextMessageHandler) matches(msg *Message) bool {

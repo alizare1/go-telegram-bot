@@ -1,3 +1,4 @@
+// Package telegrambot is a simple wrapper for telegram bot API written in Go
 package telegrambot
 
 import (
@@ -136,6 +137,7 @@ func (bot *Bot) ForwardMessage(chatId int64, msg *Message) (message Message, err
 	return message, errors.New(tgResp.Description)
 }
 
+// handleUpdate finds the first matching handler for the new update and calls its handle() method
 func (bot *Bot) handleUpdate(update Update) {
 	for _, handler := range bot.handlers {
 		if handler.matches(&update.Message) {
@@ -143,21 +145,15 @@ func (bot *Bot) handleUpdate(update Update) {
 			return
 		}
 	}
-
-	bot.SendMessage(update.Message.Chat.Id, update.Message.Text)
 }
 
 func (bot *Bot) handleUpdates(updates []Update) {
-	if len(updates) == 0 {
-		return
-	}
-
 	for _, u := range updates {
 		jobQueue <- job{Update: u, Bot: bot}
 	}
 }
 
-// Starts long polling with specified timeout.
+// StartPolling does long polling with specified timeout.
 // timeout is a positive integer and defaults to 0 eg. short polling. short polling is only used for testing
 func (bot *Bot) StartPolling(timeoutOption ...int) {
 	var timeout int
@@ -168,7 +164,6 @@ func (bot *Bot) StartPolling(timeoutOption ...int) {
 	initDispatcher()
 
 	for {
-		fmt.Println("tick")
 		updates, _ := bot.getUpdates(timeout)
 		bot.handleUpdates(updates)
 	}
