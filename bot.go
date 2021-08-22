@@ -153,7 +153,7 @@ func (bot *Bot) handleUpdates(updates []Update) {
 	}
 
 	for _, u := range updates {
-		bot.handleUpdate(u)
+		jobQueue <- job{Update: u, Bot: bot}
 	}
 }
 
@@ -164,6 +164,9 @@ func (bot *Bot) StartPolling(timeoutOption ...int) {
 	if len(timeoutOption) > 0 {
 		timeout = timeoutOption[0]
 	}
+
+	initDispatcher()
+
 	for {
 		fmt.Println("tick")
 		updates, _ := bot.getUpdates(timeout)
