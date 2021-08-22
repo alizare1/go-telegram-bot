@@ -23,8 +23,8 @@ import (
 func main() {
     bot := tgbot.NewBot("TOKEN")
 
-	username, _ := bot.GetMe()
-	fmt.Println(username)
+    username, _ := bot.GetMe()
+    fmt.Println(username)
 }
 ```
 
@@ -38,13 +38,13 @@ package main
 import tgbot "github.com/alizare1/go-telegram-bot"
 
 func start(bot *tgbot.Bot, msg *tgbot.Message) {
-	bot.SendMessage(msg.Chat.Id, "Hello World from Go!")
+    bot.SendMessage(msg.Chat.Id, "Hello World from Go!")
 }
 
 func main() {
     bot := tgbot.NewBot("TOKEN")
 
-	bot.AddCommandHandler("start", start)
+    bot.AddCommandHandler("start", start)
     bot.StartPolling()
 }
 ```
